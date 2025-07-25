@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin</title>
+  <style>
+    * {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', sans-serif;
+        box-sizing: border-box;
+    }
+    body {
+        background-color: #ffffff;
+        display: flex;
+        height: 100vh;
+
+        color: #000;
+    }
+    .sidebar {
+        width: 220px;
+        background: #f0f0f0;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        padding-top: 20px;
+    }
+    .sidebar h1 {
+        color: #000;
+        font-size: 20px;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    .menu {
+        padding-left: 20px;
+    }
+    .menu-item {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        margin: 15px 0;
+        color: #000;
+        font-size: 16px;
+    }
+    .btn-event {
+        margin: 30px 15px;
+        padding: 10px;
+        background: #000;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        width: 90%;
+        font-size: 14px;
+    }
+    .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 20px 40px;
+    }
+    .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .top-bar .datetime {
+        color: #333;
+        font-size: 14px;
+    }
+    .top-bar .datetime #clock {
+        font-size: 40px;
+    }
+    .top-bar .user {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 20px;
+        color: #000;
+    }
+    .top-bar .user span {
+        font-weight: bold;
+    }
+    .timetable-section {
+        margin-top: 30px;
+        background: #f9f9f9;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+    .timetable-section h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        text-decoration: underline;
+    }
+    .timetable-section .controls {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+    .timetable-section select {
+        padding: 10px;
+        font-size: 14px;
+        background-color: #fff;
+        color: #000;
+        border: 1px solid #ccc;
+    }
+    .timetable-section button {
+        background: #000;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: center;
+    }
+    th, td {
+        border: 1px solid #ccc;
+        padding: 25px 15px;
+        font-size: 14px;
+    }
+    th {
+        background: #e0e0e0;
+        font-weight: bold;
+    }
+    .top-bar .user div {
+        background: #ccc;
+        padding: 5px 10px;
+        border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h1>Schedule Sync</h1>
+    <div class="menu">
+      <a href="#" class="menu-item">Dashboard</a>
+      <a href="#" class="menu-item">Calendar</a>
+      <a href="#" class="menu-item">Inbox</a>
+    </div>
+    <button class="btn-event">Upcoming Event</button>
+  </div>
+  <div class="main">
+    <div class="top-bar">
+      <div class="datetime">
+        <span id="clock">
+
+        </span>
+      </div>
+      <div class="user">
+        <span id="User-name">teacher</span>
+        <span id="User-role">(teacher)</span>
+        <div>👤</div>
+      </div>
+    </div>
+
+    <div class="timetable-section">
+      <h2>Time Table</h2>
+      <div class="controls">
+        <select name="select" id="select-tag">
+          
+        </select>
+        <button id="add-btn" type="button">Save Current Timetable</button>
+        <button onclick="window.location.href='/admin/form'" type="button" style="background: #007bff;">Add New Lecture</button>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Days/Time</th>
+            <th>Period 1</th>
+            <th>Period 2</th>
+            <th>Period 3</th>
+            <th>Period 4</th>
+            <th>Period 5</th>
+            <th>Period 6</th>
+            <th>Period 7</th>
+            <th>Period 8</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Monday</td>
+            <td id="monday1"></td>
+            <td id="monday2"></td>
+            <td id="monday3"></td>
+            <td id="monday4"></td>
+            <td id="monday5"></td>
+            <td id="monday6"></td>
+            <td id="monday7"></td>
+            <td id="monday8"></td>
+        </tr>
+          <tr>
+            <td>Tuesday</td>
+            <td id="tuesday1"></td>
+            <td id="tuesday2"></td>
+            <td id="tuesday3"></td>
+            <td id="tuesday4"></td>
+            <td id="tuesday5"></td>
+            <td id="tuesday6"></td>
+            <td id="tuesday7"></td>
+            <td id="tuesday8"></td>
+        </tr>
+        <tr>
+            <td>Wednesday</td>
+            <td id="wednesday1"></td>
+            <td id="wednesday2"></td>
+            <td id="wednesday3"></td>
+            <td id="wednesday4"></td>
+            <td id="wednesday5"></td>
+            <td id="wednesday6"></td>
+            <td id="wednesday7"></td>
+            <td id="wednesday8"></td>
+        </tr>
+        <tr>
+            <td>Thursday</td>
+            <td id="thursday1"></td>
+            <td id="thursday2"></td>
+            <td id="thursday3"></td>
+            <td id="thursday4"></td>
+            <td id="thursday5"></td>
+            <td id="thursday6"></td>
+            <td id="thursday7"></td>
+            <td id="thursday8"></td>
+        </tr>
+        <tr>
+            <td>Friday</td>
+            <td id="friday1"></td>
+            <td id="friday2"></td>
+            <td id="friday3"></td>
+            <td id="friday4"></td>
+            <td id="friday5"></td>
+            <td id="friday6"></td>
+            <td id="friday7"></td>
+            <td id="friday8"></td>
+        </tr>
+        <tr>
+            <td>Saturday</td>
+            <td id="saturday1"></td>
+            <td id="saturday2"></td>
+            <td id="saturday3"></td>
+            <td id="saturday4"></td>
+            <td id="saturday5"></td>
+            <td id="saturday6"></td>
+            <td id="saturday7"></td>
+            <td id="saturday8"></td>
+        </tr>
+        
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  
+  <script src="./js/form.js">
+  
+</script>
+
+
+</body>
+</html>

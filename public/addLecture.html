@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Time Table Details</title>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .modal {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      width: 400px;
+    }
+
+    .modal h2 {
+      color: black;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .cancel-btn {
+      padding: 8px 16px;
+      background: #ccc;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .save-btn {
+      padding: 8px 16px;
+      background: black;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+
+    table {
+      margin-top: 30px;
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+  <div class="modal">
+    <h2>Add Time Table Details</h2>
+    <form id="scheduleForm">
+      <div class="form-group">
+        <label for="lectureNumber">Lecture Number</label>
+        <select id="lectureNumber">
+          <option value="1">Lecture 1</option>
+          <option value="2">Lecture 2</option>
+          <option value="3">Lecture 3</option>
+          <option value="4">Lecture 4</option>
+          <option value="5">Lecture 5</option>
+          <option value="6">Lecture 6</option>
+          <option value="7">Lecture 7</option>
+          <option value="8">Lecture 8</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="subject">Subject Name</label>
+        <input type="text" id="subject" required />
+      </div>
+
+      <div class="form-group">
+        <label for="startTime">Start Time</label>
+        <input type="time" id="startTime" required />
+      </div>
+
+      <div class="form-group">
+        <label for="endTime">End Time</label>
+        <input type="time" id="endTime" required />
+      </div>
+
+      <div class="form-group">
+        <label for="room">Room Number</label>
+        <input type="text" id="room" required />
+      </div>
+
+      <div class="form-group">
+        <label for="day">Day</label>
+        <select id="day">
+          <option>Monday</option>
+          <option>Tuesday</option>
+          <option>Wednesday</option>
+          <option>Thursday</option>
+          <option>Friday</option>
+          <option>Saturday</option>
+        </select>
+      </div>
+
+      <div class="button-group">
+        <button type="button" class="cancel-btn" onclick="resetForm()">Cancel</button>
+        <button type="submit" class="save-btn">Save</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+
+  // Time ko 12-hour format me convert karne ke liye function
+  function formatTime(timeStr) {
+    const [hour, minute] = timeStr.split(":"); // Hour aur minute split kar rahe hain
+    let h = parseInt(hour);
+    const suffix = h >= 12 ? "PM" : "AM"; // 12 ke baad PM, warna AM
+  h = h % 12 || 12; // 0 ko 12 bana do (midnight/noon)
+  return `${h}:${minute} ${suffix}`; // Final formatted string
+}
+
+
+// Form ko reset karne ke liye function
+function resetForm() {
+  document.getElementById("scheduleForm").reset();
+}
+
+
+// Jab admin schedule form submit kare, tab yeh event listener chalega
+document.getElementById("scheduleForm").addEventListener("submit", async function (e) {
+  e.preventDefault(); // Form submit hone se page reload na ho
+
+  // Form ke sare input values nikal rahe hain
+  const subject = document.getElementById("subject").value;
+  const room = document.getElementById("room").value;
+  const day = document.getElementById("day").value;
+  const startTime = document.getElementById("startTime").value;
+  const endTime = document.getElementById("endTime").value;
+  const lectureNumber = document.getElementById("lectureNumber").value;
+  // Slot ko formatted time ke sath bana rahe hain
+  const slot = `${formatTime(startTime)}–${formatTime(endTime)}`;
+
+  // Naya schedule object bana rahe hain
+  const newSchedule = { subject, room, day, slot, lectureNumber };
+
+
+
+  // Server ko bhejne ke liye payload bana rahe hain
+  // const payload = {
+  //   email: JSON.parse(localStorage.getItem('selectedTeacher')),
+  //   ...newSchedule
+  // };
+
+  try {
+    // Server pe POST request bhej rahe hain
+    const response = await fetch("/admin/form", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(newSchedule)
+    });
+
+    if (response.ok) {
+      // Agar response sahi aaya toh success alert aur page redirect
+      alert("Schedule added successfully.");
+      window.location.href = '/admin'; 
+      resetForm();
+    } else {
+      // Agar server ne error bheja toh uska message alert me dikhaye
+      const err = await response.json();
+      alert("Failed: " + err.message);
+    }
+  } catch (error) {
+    // Network ya koi aur error aayi toh console aur alert me dikhaye
+    console.error(error);
+    alert("Error occurred while sending schedule.");
+  }
+});
+
+
+
+  </script>
+</body>
+</html>

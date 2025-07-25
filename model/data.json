@@ -1,0 +1,90 @@
+[
+  {
+    "username": "ayush",
+    "email": "ayush0487negi0487@gmail.com",
+    "password": "123",
+    "role": "admin"
+  },
+  {
+    "username": "egvefgv",
+    "email": "ayush087negi0487@gmail.com",
+    "password": "123",
+    "role": "admin"
+  },
+  {
+    "username": "ayush",
+    "email": "ayush",
+    "password": "12345",
+    "role": "user",
+    "lectures": [],
+    "schedule": [
+      {
+        "day": "Monday",
+        "lectureNumber": "3",
+        "subject": "fgvhbjnk",
+        "room": "1235",
+        "slot": "",
+        "timestamp": "2025-07-22T16:20:49.481Z"
+      },
+      {
+        "day": "Tuesday",
+        "lectureNumber": "5",
+        "subject": "sd",
+        "room": "97y8",
+        "slot": "",
+        "timestamp": "2025-07-22T16:24:31.640Z"
+      },
+      {
+        "day": "Saturday",
+        "lectureNumber": "1",
+        "subject": "fgvhbjnkm",
+        "room": "7654",
+        "slot": "",
+        "timestamp": "2025-07-22T16:29:24.072Z"
+      },
+      {
+        "day": "Wednesday",
+        "lectureNumber": "1",
+        "subject": "lpoijuhgfv",
+        "room": "567",
+        "slot": "",
+        "timestamp": "2025-07-22T16:32:01.147Z"
+      },
+      {
+        "day": "Thursday",
+        "lectureNumber": "1",
+        "subject": "gthjk765",
+        "room": "56",
+        "slot": "",
+        "timestamp": "2025-07-22T16:33:54.095Z"
+      },
+      {
+        "day": "Friday",
+        "lectureNumber": "1",
+        "subject": "fghjn",
+        "room": "567",
+        "slot": "",
+        "timestamp": "2025-07-23T07:03:51.144Z"
+      }
+    ]
+  },
+  {
+    "username": "ayush",
+    "email": "ayush1",
+    "password": "12345",
+    "role": "user"
+  },
+  {
+    "username": "Akash",
+    "email": "ag@gmail.com",
+    "password": "12345",
+    "role": "admin"
+  },
+  {
+    "username": "akash",
+    "email": "ag",
+    "password": "1234567",
+    "role": "admin"
+  }
+]
+
