@@ -89,16 +89,37 @@
     <h2>Add Time Table Details</h2>
     <form id="scheduleForm">
       <div class="form-group">
+        <label for="teacherSelect">Select Teacher</label>
+        <select id="teacherSelect" required>
+          <option value="">Choose a teacher...</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="day">Day</label>
+        <select id="day" required>
+          <option value="">Select Day</option>
+          <option value="Monday">Monday</option>
+          <option value="Tuesday">Tuesday</option>
+          <option value="Wednesday">Wednesday</option>
+          <option value="Thursday">Thursday</option>
+          <option value="Friday">Friday</option>
+          <option value="Saturday">Saturday</option>
+        </select>
+      </div>
+
+      <div class="form-group">
         <label for="lectureNumber">Lecture Number</label>
-        <select id="lectureNumber">
-          <option value="1">Lecture 1</option>
-          <option value="2">Lecture 2</option>
-          <option value="3">Lecture 3</option>
-          <option value="4">Lecture 4</option>
-          <option value="5">Lecture 5</option>
-          <option value="6">Lecture 6</option>
-          <option value="7">Lecture 7</option>
-          <option value="8">Lecture 8</option>
+        <select id="lectureNumber" required>
+          <option value="">Select Period</option>
+          <option value="1">Period 1 (9:00 AM – 9:50 AM)</option>
+          <option value="2">Period 2 (9:50 AM – 10:40 AM)</option>
+          <option value="3">Period 3 (10:40 AM – 11:30 AM)</option>
+          <option value="4">Period 4 (11:30 AM – 12:20 PM)</option>
+          <option value="5">Period 5 (12:20 PM – 1:10 PM)</option>
+          <option value="6">Period 6 (1:10 PM – 2:00 PM)</option>
+          <option value="7">Period 7 (2:00 PM – 2:50 PM)</option>
+          <option value="8">Period 8 (2:50 PM – 3:40 PM)</option>
         </select>
       </div>
 
@@ -108,30 +129,8 @@
       </div>
 
       <div class="form-group">
-        <label for="startTime">Start Time</label>
-        <input type="time" id="startTime" required />
-      </div>
-
-      <div class="form-group">
-        <label for="endTime">End Time</label>
-        <input type="time" id="endTime" required />
-      </div>
-
-      <div class="form-group">
         <label for="room">Room Number</label>
         <input type="text" id="room" required />
-      </div>
-
-      <div class="form-group">
-        <label for="day">Day</label>
-        <select id="day">
-          <option>Monday</option>
-          <option>Tuesday</option>
-          <option>Wednesday</option>
-          <option>Thursday</option>
-          <option>Friday</option>
-          <option>Saturday</option>
-        </select>
       </div>
 
       <div class="button-group">
@@ -142,74 +141,104 @@
   </div>
 
   <script>
+  // Fixed time slots for each lecture period
+  const lectureTimeSlots = {
+    1: "9:00 AM – 9:50 AM",
+    2: "9:50 AM – 10:40 AM", 
+    3: "10:40 AM – 11:30 AM",
+    4: "11:30 AM – 12:20 PM",
+    5: "12:20 PM – 1:10 PM",
+    6: "1:10 PM – 2:00 PM",
+    7: "2:00 PM – 2:50 PM",
+    8: "2:50 PM – 3:40 PM"
+  };
 
-  // Time ko 12-hour format me convert karne ke liye function
-  function formatTime(timeStr) {
-    const [hour, minute] = timeStr.split(":"); // Hour aur minute split kar rahe hain
-    let h = parseInt(hour);
-    const suffix = h >= 12 ? "PM" : "AM"; // 12 ke baad PM, warna AM
-  h = h % 12 || 12; // 0 ko 12 bana do (midnight/noon)
-  return `${h}:${minute} ${suffix}`; // Final formatted string
-}
-
-
-// Form ko reset karne ke liye function
-function resetForm() {
-  document.getElementById("scheduleForm").reset();
-}
-
-
-// Jab admin schedule form submit kare, tab yeh event listener chalega
-document.getElementById("scheduleForm").addEventListener("submit", async function (e) {
-  e.preventDefault(); // Form submit hone se page reload na ho
-
-  // Form ke sare input values nikal rahe hain
-  const subject = document.getElementById("subject").value;
-  const room = document.getElementById("room").value;
-  const day = document.getElementById("day").value;
-  const startTime = document.getElementById("startTime").value;
-  const endTime = document.getElementById("endTime").value;
-  const lectureNumber = document.getElementById("lectureNumber").value;
-  // Slot ko formatted time ke sath bana rahe hain
-  const slot = `${formatTime(startTime)}–${formatTime(endTime)}`;
-
-  // Naya schedule object bana rahe hain
-  const newSchedule = { subject, room, day, slot, lectureNumber };
-
-
-
-  // Server ko bhejne ke liye payload bana rahe hain
-  // const payload = {
-  //   email: JSON.parse(localStorage.getItem('selectedTeacher')),
-  //   ...newSchedule
-  // };
-
-  try {
-    // Server pe POST request bhej rahe hain
-    const response = await fetch("/admin/form", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(newSchedule)
-    });
-
-    if (response.ok) {
-      // Agar response sahi aaya toh success alert aur page redirect
-      alert("Schedule added successfully.");
-      window.location.href = '/admin'; 
-      resetForm();
-    } else {
-      // Agar server ne error bheja toh uska message alert me dikhaye
-      const err = await response.json();
-      alert("Failed: " + err.message);
+  // Load teachers on page load
+  document.addEventListener('DOMContentLoaded', async function() {
+    try {
+      const response = await fetch('/data');
+      if (response.ok) {
+        const teachers = await response.json();
+        const teacherSelect = document.getElementById('teacherSelect');
+        
+        teachers.forEach(teacher => {
+          if (teacher.role === 'user') {
+            const option = document.createElement('option');
+            option.value = teacher.email;
+            option.textContent = `${teacher.username} - ${teacher.email}`;
+            teacherSelect.appendChild(option);
+          }
+        });
+      }
+    } catch (error) {
+      console.error('Error loading teachers:', error);
+      alert('Failed to load teachers list');
     }
-  } catch (error) {
-    // Network ya koi aur error aayi toh console aur alert me dikhaye
-    console.error(error);
-    alert("Error occurred while sending schedule.");
+  });
+
+  // Form ko reset karne ke liye function
+  function resetForm() {
+    document.getElementById("scheduleForm").reset();
   }
-});
+
+  // Jab admin schedule form submit kare, tab yeh event listener chalega
+  document.getElementById("scheduleForm").addEventListener("submit", async function (e) {
+    e.preventDefault(); // Form submit hone se page reload na ho
+
+    // Form ke sare input values nikal rahe hain
+    const email = document.getElementById("teacherSelect").value;
+    const subject = document.getElementById("subject").value;
+    const room = document.getElementById("room").value;
+    const day = document.getElementById("day").value;
+    const lectureNumber = document.getElementById("lectureNumber").value;
+    
+    // Validation
+    if (!email || !subject || !day || !lectureNumber) {
+      alert("Please fill in all required fields");
+      return;
+    }
+    
+    // Fixed time slot get kar rahe hain lecture number ke basis par
+    const timeSlot = lectureTimeSlots[lectureNumber];
+
+    // Naya schedule object bana rahe hain with all required fields
+    const newSchedule = { 
+      email,
+      subject, 
+      room, 
+      day, 
+      lectureNumber,
+      timeSlot
+    };
+
+    console.log('Sending data:', newSchedule); // Debug log
+
+    try {
+      // Server pe POST request bhej rahe hain
+      const response = await fetch("/admin/form", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newSchedule)
+      });
+
+      if (response.ok) {
+        // Agar response sahi aaya toh success alert aur page redirect
+        alert("Schedule added successfully.");
+        window.location.href = '/form.html'; 
+        resetForm();
+      } else {
+        // Agar server ne error bheja toh uska message alert me dikhaye
+        const err = await response.json();
+        alert("Failed: " + err.message);
+      }
+    } catch (error) {
+      // Network ya koi aur error aayi toh console aur alert me dikhaye
+      console.error(error);
+      alert("Error occurred while sending schedule.");
+    }
+  });
 
 
 

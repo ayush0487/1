@@ -43,18 +43,18 @@ export const index=async (req, res) => {
 export const login = async (req, res) => {
     const { email, password, role } = req.body;
 
-    if (!email || !password) {
-        return res.status(400).send("Email and password are required");
+    if (!email || !password || !role) {
+        return res.status(400).send("Email, password and role are required");
     }
 
     try {
         const fileContent = fs.readFileSync(filepath, 'utf-8');
         const fileData = JSON.parse(fileContent);
         
-        const user = fileData.find(u => u.email === email && u.password === password);
+        const user = fileData.find(u => u.email === email && u.password === password && u.role === role);
 
         if (!user) {
-            return res.status(401).send("Invalid email or password");
+            return res.status(401).send("Invalid email, password or role");
         }
         
         // Store user data in session

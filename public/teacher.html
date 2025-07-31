@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin</title>
-  <style>
-    * {
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher</title>
+    <style>
+        * {
         margin: 0;
         padding: 0;
         font-family: 'Segoe UI', sans-serif;
@@ -81,37 +81,21 @@
     }
     .timetable-section {
         margin-top: 30px;
-        background: #f9f9f9;
+        
         padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        
     }
-    .timetable-section h2 {
-        text-align: center;
-        margin-bottom: 20px;
-        text-decoration: underline;
-    }
-    .timetable-section .controls {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-    }
-    .timetable-section select {
-        padding: 10px;
-        font-size: 14px;
-        background-color: #fff;
-        color: #000;
-        border: 1px solid #ccc;
-    }
-    .timetable-section button {
+    
+    /* .timetable-section #show {
         background: #000;
         color: white;
         border: none;
+        margin: 2vh;
+        float: right;
         padding: 10px 15px;
         border-radius: 5px;
-        cursor: pointer;
-    }
-    table {
+    } */
+     table {
         width: 100%;
         border-collapse: collapse;
         text-align: center;
@@ -124,20 +108,121 @@
     th {
         background: #e0e0e0;
         font-weight: bold;
-    }
+    } 
     .top-bar .user div {
         background: #ccc;
         padding: 5px 10px;
         border-radius: 50%;
     }
-  </style>
+    .details {
+        display: flex;
+        justify-content: space-between;
+    }
+    .lectures{
+        border: 1px solid black;
+        display: flex;
+        width: 390px;
+        padding: 3vh;
+        background: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+    .left{
+        border: 1px solid black;
+        display: flex;
+        width: 390px;
+        padding: 3vh;
+        background: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+    .done{
+        border: 1px solid black;
+        display: flex;
+        width: 390px;
+        padding: 3vh;
+        background: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+    .up-ad , .to-sc , .ad-pr {
+        border: 1px solid black;
+        width: 100%;
+        margin-top: 2vh;
+        padding: 3vh;
+        background: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+    .up-ad input , .to-sc input , .ad-pr input {
+        border: 1px solid black;
+        border-radius: 10px;
+        margin-top: 20px;
+        padding: 2vh;
+        width: 100%;
+        font-weight: 600;
+    }
+    .table-section {
+        margin-top: 30px;
+        padding: 20px;
+    }
+    .side3 {
+        margin-top: 30px;
+        padding: 30px;
+        background: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        border: 1px solid #ddd;
+        max-width: 500px;
+    }
+    .side3 h3 {
+        margin-bottom: 20px;
+        color: #333;
+        font-size: 20px;
+        text-align: center;
+    }
+    .side3 form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+    .side3 input[type="date"],
+    .side3 input[type="text"] {
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .side3 input[type="date"]:focus,
+    .side3 input[type="text"]:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    }
+    .side3 button[type="submit"] {
+        padding: 12px 20px;
+        background: #000;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .side3 button[type="submit"]:hover {
+        background: #333;
+    }
+    </style>
 </head>
 <body>
-  <div class="sidebar">
+    <div class="sidebar">
     <h1>Schedule Sync</h1>
     <div class="menu">
-      <a href="#" class="menu-item">Dashboard</a>
-      <a href="#" class="menu-item">Calendar</a>
+      <a href="#" id="dashboard" class="menu-item">Dashboard</a>
+      <a href="#" id="calendar" class="menu-item">Calendar</a>
+      <a href="#" id="app-leave" class="menu-item">Request Leave</a>
       <a href="#" class="menu-item">Inbox</a>
     </div>
     <button class="btn-event">Upcoming Event</button>
@@ -150,33 +235,66 @@
         </span>
       </div>
       <div class="user">
-        <span id="User-name">teacher</span>
+        <span id="User-name">teachername</span>
         <span id="User-role">(teacher)</span>
         <div>👤</div>
       </div>
     </div>
 
     <div class="timetable-section">
-      <h2>Time Table</h2>
-      <div class="controls">
-        <select name="select" id="select-tag">
-          
-        </select>
-        <button id="add-btn" type="button">Save Current Timetable</button>
-        <button onclick="window.location.href='/admin/form'" type="button" style="background: #007bff;">Add New Lecture</button>
+      <div class="details">
+        <div class="lectures">
+            <span>📅</span>
+            <div>
+                <p id="lecno">0</p>
+                <p id="tl">Total lecture</p>
+            </div>
+        </div>
+        <div class="left">
+            <span>🕒</span>
+            <div>
+                <p id="lecleft">0</p>
+                <p id="tl">Total Left</p>
+            </div>
+        </div>
+        <div class="done">
+            <span>✔️</span>
+            <div>
+                <p id="lecdone">0</p>
+                <p id="tl">Total Done</p>
+            </div>
+        </div>
       </div>
-      <table>
+      <div class="upcoming">
+        <div class="up-ad">
+            <h3 id="text">Upcoming Adjustments</h3>
+            <input type="text" id="up-ad-in" placeholder="No Adjustments Scheduled Yet" disabled>
+        </div>
+        <div class="to-sc">
+            <h3 id="text">Today Schedules</h3>
+            <input type="text" id="to-sc-in" placeholder="No Adjustments Scheduled Yet" disabled>
+        </div>
+        <div class="ad-pr">
+            <h3 id="text">Adjustments Proposals</h3>
+            <input type="text" id="ad-pr-in" placeholder="No Adjustments Scheduled Yet" disabled>
+        </div>
+        
+      </div>
+      
+    </div>
+    <div class="table-section">
+        <table>
         <thead>
           <tr>
             <th>Days/Time</th>
-            <th>Period 1</th>
-            <th>Period 2</th>
-            <th>Period 3</th>
-            <th>Period 4</th>
-            <th>Period 5</th>
-            <th>Period 6</th>
-            <th>Period 7</th>
-            <th>Period 8</th>
+            <th>Period 1<br><small>9:00-9:50 AM</small></th>
+            <th>Period 2<br><small>9:50-10:40 AM</small></th>
+            <th>Period 3<br><small>10:40-11:30 AM</small></th>
+            <th>Period 4<br><small>11:30-12:20 PM</small></th>
+            <th>Period 5<br><small>12:20-1:10 PM</small></th>
+            <th>Period 6<br><small>1:10-2:00 PM</small></th>
+            <th>Period 7<br><small>2:00-2:50 PM</small></th>
+            <th>Period 8<br><small>2:50-3:40 PM</small></th>
           </tr>
         </thead>
         <tbody>
@@ -251,13 +369,179 @@
         </tbody>
       </table>
     </div>
+  
+    <div class="side3" style="margin-top: 30px;">
+      <h3>Request Leave</h3>
+      <form id="leaveForm">
+        <input type="date" id="leaveDate" required placeholder="Select Date" />
+        <input type="text" id="leaveReason" placeholder="Reason for leave" required />
+        <button type="submit">Submit Leave Request</button>
+      </form>
+    </div>
   </div>
 
-  
-  <script src="./js/form.js">
-  
-</script>
 
+  <script>
+    // DOM se elements nikal rahe hain (naam, role, calendar, dashboard, details, table, lectures)
+    const userName = document.querySelector('#User-name');
+    const userRole = document.querySelector('#User-role');
+    const calendar = document.querySelector('#calendar');
+    const dashboard = document.querySelector('#dashboard');
+    const details = document.querySelector('.timetable-section');
+    const tableSection = document.querySelector('.table-section');
+    const lecno = document.querySelector('#lecno');
+    const lecleft = document.querySelector('#lecleft');
+    const lecdone = document.querySelector('#lecdone');
+    const side3 = document.querySelector('.side3');
+    const leaveform = document.querySelector('#leaveForm');
+    const appleave = document.querySelector('#app-leave');
+
+    // Table ko default mein hide kar rahe hain (sirf dashboard pe dikhegi)
+    tableSection.style.display = "none";
+    side3.style.display = "none";
+
+
+
+    // Real-time clock show karta hai (top bar mein)
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      const minutes = now.getMinutes();
+      const seconds = now.getSeconds();
+      const ampm = hours >= 12 ? 'pm' : 'am';
+      hours = hours % 12 || 12;
+      document.getElementById('clock').textContent = `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${ampm}`;
+    }
+
+    // Calendar pe click karte hi timetable table dikhao, details hide karo
+    calendar.addEventListener('click',()=>{
+      details.style.display = "none";
+      tableSection.style.display = "block";
+      side3.style.display="none";
+    })
+    // Dashboard pe click karte hi details dikhao, table hide karo
+    dashboard.addEventListener('click',()=>{
+      details.style.display = "block";
+      tableSection.style.display = "none";
+      side3.style.display="none";
+    })
+    appleave.addEventListener('click',()=>{
+      details.style.display = "none";
+      tableSection.style.display = "none";
+      side3.style.display="flex";
+    })
+    
+
+    // Clock ko start karo aur har second update karo
+    updateClock();
+    setInterval(updateClock,1000);
+
+    // Current teacher ka info aur uska timetable backend se laata hai aur render karta hai
+    async function fetchAndRenderTeacher() {
+      try {
+        // Backend se current teacher ka data lao
+        const res = await fetch('/teacher/me');
+        if (res.status === 401) {
+          // Agar login nahi hai toh signin page pe bhej do
+          window.location.href = '/login.html';
+          return;
+        }
+        if (!res.ok) return;
+        const teacher = await res.json();
+        if (!teacher || !Array.isArray(teacher.schedule)) return;
+        // Naam aur role UI pe set karo
+        userName.textContent = teacher.name;
+        userRole.textContent = `(${teacher.role})`;
+        // Timetable render karo
+        renderTimetable(teacher.schedule);
+      } catch (err) {
+        // Agar kuch error aaye toh chup chaap ignore karo
+        console.error('Error fetching teacher data:', err);
+      }
+    }
+
+    // Timetable table ko render karta hai (teacher ke lectures show karta hai)
+    function renderTimetable(schedule) {
+      // Fixed time slots for each lecture period
+      const lectureTimeSlots = {
+        1: "9:00 AM – 9:50 AM",
+        2: "9:50 AM – 10:40 AM", 
+        3: "10:40 AM – 11:30 AM",
+        4: "11:30 AM – 12:20 PM",
+        5: "12:20 PM – 1:10 PM",
+        6: "1:10 PM – 2:00 PM",
+        7: "2:00 PM – 2:50 PM",
+        8: "2:50 PM – 3:40 PM"
+      };
+
+      const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
+      // Table ke saare cells ko empty karo
+      for (let day of days) {
+        for (let i = 1; i <= 8; i++) {
+          const cell = document.getElementById(day + i);
+          if (cell) cell.innerHTML = "";
+        }
+      }
+      let count = 0;
+      // Schedule ke hisaab se table fill karo
+      schedule.forEach(item => {
+        const { day, lectureNumber, subject, room } = item;
+        const dayId = day.toLowerCase() + lectureNumber;
+        const cell = document.getElementById(dayId);
+        if (cell) {
+          count++;
+          // Use fixed time slot instead of stored slot
+          const timeSlot = lectureTimeSlots[lectureNumber] || '';
+          cell.innerHTML = `${subject}<br><small>${room || ''}</small><br>${timeSlot}`;
+        }
+      });
+      // Lecture count UI pe update karo (total, left, done)
+      lecno.textContent = count;
+      lecleft.textContent = count; // Logic aap adjust kar sakte ho
+      lecdone.textContent = count; // Logic aap adjust kar sakte ho
+    }
+
+
+    // Leave request form submit karte hi backend pe request bhejta hai
+
+    leaveform.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      // Date aur reason form se nikaal rahe hain
+      const date = document.getElementById('leaveDate').value;
+      const reason = document.getElementById('leaveReason').value;
+
+      // Basic validation (date/reason empty toh alert)
+      if (!date || !reason) {
+        alert('Date aur reason dono bharna zaroori hai.');
+        return;
+      }
+
+      try {
+        // Backend pe leave request bhej rahe hain
+        const res = await fetch('/teacher/request-leave', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ date, reason }),
+          credentials: 'include' // Session ko maintain karne ke liye
+        });
+
+        if (res.ok) {
+          alert("Leave request submitted. Adjustments pending admin approval.");
+          leaveform.reset(); // Form reset karo
+        } else {
+          // Agar backend se error aaye toh error message dikhao
+          const errMsg = await res.text();
+          alert("Error submitting leave request: " + errMsg);
+        }
+      } catch (err) {
+        alert("Server error. Try again.");
+      }
+    });
+
+
+    // Page load hote hi teacher ka timetable fetch aur render karo
+    fetchAndRenderTeacher();
+  </script>
 
 </body>
 </html>

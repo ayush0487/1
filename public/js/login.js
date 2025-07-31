@@ -21,6 +21,11 @@ let role=null;
           return;
         }
 
+        if (!role) {
+          alert("Please select a role (Admin or User)");
+          return;
+        }
+
         const loginData = { email, password, role };
 
         try {
@@ -36,12 +41,12 @@ let role=null;
           console.log(content);
           
           if(rawResponse.ok) {
-            alert(`logged in successfully!`);
-            if(loginData.role=='user')
-            window.location.href = "/teacher.html"; 
-          else{
-            window.location.href = '/form.html'
-          }
+            alert(`Logged in successfully!`);
+            if(loginData.role == 'user') {
+              window.location.href = "/teacher.html"; 
+            } else if(loginData.role == 'admin') {
+              window.location.href = '/form.html';
+            }
           } else {
             alert(content);
           }

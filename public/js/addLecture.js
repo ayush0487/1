@@ -1,6 +1,18 @@
 // Global variables
 let teachers = [];
 
+// Fixed time slots for each lecture period
+const lectureTimeSlots = {
+  1: "9:00 AM – 9:50 AM",
+  2: "9:50 AM – 10:40 AM", 
+  3: "10:40 AM – 11:30 AM",
+  4: "11:30 AM – 12:20 PM",
+  5: "12:20 PM – 1:10 PM",
+  6: "1:10 PM – 2:00 PM",
+  7: "2:00 PM – 2:50 PM",
+  8: "2:50 PM – 3:40 PM"
+};
+
 // Page load hone par teachers fetch karna
 async function fetchTeachers() {
   try {
@@ -39,13 +51,15 @@ document.getElementById('lecture-form').addEventListener('submit', async (e) => 
   const period = parseInt(document.getElementById('period-select').value);
   const subject = document.getElementById('subject-input').value.trim();
   const room = document.getElementById('room-input').value.trim();
-  const timeSlot = document.getElementById('time-slot').value.trim();
   
   // Validation
   if (!teacherEmail || !day || isNaN(period) || !subject) {
     alert('Please fill all required fields!');
     return;
   }
+  
+  // Get fixed time slot for the period
+  const timeSlot = lectureTimeSlots[period + 1]; // period is 0-based, our slots are 1-based
   
   // Create lecture object
   const lectureData = {
@@ -66,10 +80,10 @@ document.getElementById('lecture-form').addEventListener('submit', async (e) => 
       body: JSON.stringify({
         email: teacherEmail,
         day: day,
-        period: period,
+        lectureNumber: period + 1,
         subject: subject,
         room: room,
-        timeSlot: timeSlot
+        slot: timeSlot
       })
     });
     

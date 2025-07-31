@@ -4,6 +4,23 @@ document.addEventListener('DOMContentLoaded', () => {
   const userRole = document.querySelector('#User-role');
   const selectTeacher = document.querySelector('#select-tag');
   const addBtn = document.querySelector('#add-btn');
+  const dashboard = document.querySelector('#dashboard');
+  const calendar = document.querySelector('#calendar');
+  const approveLeave = document.querySelector('#approve-leave');
+  const timetableSection = document.querySelector('.timetable-section');
+  const leaveSection = document.querySelector('.leave-section');
+
+  // Fixed time slots for each lecture period
+  const lectureTimeSlots = {
+    1: "9:00 AM – 9:50 AM",
+    2: "9:50 AM – 10:40 AM", 
+    3: "10:40 AM – 11:30 AM",
+    4: "11:30 AM – 12:20 PM",
+    5: "12:20 PM – 1:10 PM",
+    6: "1:10 PM – 2:00 PM",
+    7: "2:00 PM – 2:50 PM",
+    8: "2:50 PM – 3:40 PM"
+  };
 
   // Global variables
   let users = [];
@@ -129,19 +146,19 @@ document.addEventListener('DOMContentLoaded', () => {
             const lines = content.split('<br>');
             const subject = lines[0] || '';
             let room = '';
-            let slot = '';
 
             if (lines.length > 1) {
               lines.forEach(line => {
                 if (line.includes('Room:')) {
                   room = line.replace('<small>Room:', '').replace('</small>', '').trim();
-                } else if (line.includes('<small>') && !line.includes('Room:')) {
-                  slot = line.replace('<small>', '').replace('</small>', '').trim();
                 }
               });
             }
 
             if (subject) {
+              // Use fixed time slot based on period number
+              const slot = lectureTimeSlots[period];
+              
               scheduleArray.push({
                 day: day.charAt(0).toUpperCase() + day.slice(1),
                 lectureNumber: period,
@@ -169,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (response.ok) {
         alert("Schedule saved successfully!");
-        window.location='/admin';
+        window.location.href = '/form.html';
       } else {
         const errorData = await response.json();
         alert(`Failed to save schedule: ${errorData.message}`);
@@ -198,13 +215,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (selectedTeacher && selectedTeacher.schedule && Array.isArray(selectedTeacher.schedule)) {
       selectedTeacher.schedule.forEach(lecture => {
-        const { day, lectureNumber, subject, room, slot } = lecture;
+        const { day, lectureNumber, subject, room } = lecture;
         const dayId = day.toLowerCase() + lectureNumber;
         const cell = document.getElementById(dayId);
         if (cell) {
           let content = subject;
           if (room) content += `<br><small>Room: ${room}</small>`;
-          if (slot) content += `<br><small>${slot}</small>`;
+          // Add fixed time slot based on lecture number
+          const timeSlot = lectureTimeSlots[lectureNumber];
+          if (timeSlot) content += `<br><small>${timeSlot}</small>`;
           cell.innerHTML = content;
         }
       });
@@ -228,9 +247,94 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Navigation handlers
+    dashboard.addEventListener('click', () => {
+      timetableSection.style.display = 'block';
+      leaveSection.style.display = 'none';
+    });
+
+    calendar.addEventListener('click', () => {
+      timetableSection.style.display = 'block';
+      leaveSection.style.display = 'none';
+    });
+
+    approveLeave.addEventListener('click', () => {
+      timetableSection.style.display = 'none';
+      leaveSection.style.display = 'block';
+      loadLeaveRequests();
+    });
+
     setInterval(updateClock, 1000);
     updateClock();
   }
+
+  // Load leave requests from server
+  async function loadLeaveRequests() {
+    try {
+      const response = await fetch('/admin/leave-requests');
+      if (response.ok) {
+        const leaveRequests = await response.json();
+        displayLeaveRequests(leaveRequests);
+      } else {
+        console.error('Failed to load leave requests');
+      }
+    } catch (error) {
+      console.error('Error loading leave requests:', error);
+    }
+  }
+
+  // Display leave requests in the UI
+  function displayLeaveRequests(requests) {
+    const container = document.getElementById('leave-requests-container');
+    
+    if (requests.length === 0) {
+      container.innerHTML = '<p style="text-align: center; color: #666;">No leave requests found.</p>';
+      return;
+    }
+
+    container.innerHTML = requests.map(request => `
+      <div class="leave-request ${request.status.toLowerCase()}">
+        <h4>${request.teacherName} (${request.email})</h4>
+        <p><strong>Date:</strong> ${new Date(request.date).toLocaleDateString()}</p>
+        <p><strong>Reason:</strong> ${request.reason}</p>
+        <p><strong>Submitted:</strong> ${new Date(request.timestamp).toLocaleDateString()}</p>
+        <span class="status ${request.status.toLowerCase()}">${request.status}</span>
+        
+        ${request.status === 'Pending' ? `
+          <div class="leave-actions">
+            <button class="approve-btn" onclick="handleLeaveRequest(${request.id}, 'Approved')">
+              Approve
+            </button>
+            <button class="reject-btn" onclick="handleLeaveRequest(${request.id}, 'Rejected')">
+              Reject
+            </button>
+          </div>
+        ` : ''}
+      </div>
+    `).join('');
+  }
+
+  // Handle leave request approval/rejection
+  window.handleLeaveRequest = async function(requestId, status) {
+    try {
+      const response = await fetch('/admin/handle-leave-request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ requestId, status })
+      });
+
+      if (response.ok) {
+        alert(`Leave request ${status.toLowerCase()} successfully!`);
+        loadLeaveRequests(); // Reload the requests
+      } else {
+        const error = await response.text();
+        alert(`Failed to ${status.toLowerCase()} leave request: ${error}`);
+      }
+    } catch (error) {
+      console.error('Error handling leave request:', error);
+      alert('Error occurred while processing leave request.');
+    }
+  };
 
   // Start initialization
   initializePage();
