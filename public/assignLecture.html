@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assign Lectures</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+        .leave-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 4px solid #007bff;
+        }
+        .leave-info h3 {
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+        .lectures-section {
+            margin-bottom: 30px;
+        }
+        .lectures-section h3 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .lecture-item {
+            background: #fff;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .lecture-details {
+            flex: 1;
+        }
+        .lecture-details h4 {
+            margin-bottom: 5px;
+            color: #333;
+        }
+        .lecture-details p {
+            margin: 3px 0;
+            color: #666;
+        }
+        .assign-section {
+            flex: 0 0 300px;
+            margin-left: 20px;
+        }
+        .assign-section label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        .assign-section select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        .assign-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .assign-btn:hover {
+            background: #218838;
+        }
+        .assign-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        .teacher-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            background: #f9f9f9;
+        }
+        .teacher-info {
+            flex: 1;
+        }
+        .teacher-name {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .teacher-details {
+            font-size: 12px;
+            color: #666;
+        }
+        .availability-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .workload-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        .workload-low {
+            background: #d4edda;
+            color: #155724;
+        }
+        .workload-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .workload-high {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .availability-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        .available {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        .occupied {
+            background: #f5c6cb;
+            color: #721c24;
+        }
+        .teacher-select-btn {
+            padding: 6px 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .teacher-select-btn:hover {
+            background: #0056b3;
+        }
+        .teacher-select-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        .actions {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .complete-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 15px;
+        }
+        .cancel-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .status.assigned {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status.unassigned {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Assign Lectures for Leave Request</h1>
+        
+        <div class="leave-info" id="leave-info">
+            <!-- Leave request details will be loaded here -->
+        </div>
+
+        <div class="lectures-section">
+            <h3>Teacher's Lectures to Assign</h3>
+            <div id="lectures-container">
+                <!-- Lectures will be loaded here -->
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="complete-btn" onclick="completeAssignment()">Complete Assignment & Approve Leave</button>
+            <button class="cancel-btn" onclick="cancelAssignment()">Cancel</button>
+        </div>
+    </div>
+
+    <script>
+        let leaveRequest = null;
+        let teacherLectures = [];
+        let teacherAvailability = [];
+        let assignments = {};
+        let currentTeacher = null; // Teacher selected from form.html
+
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const requestId = urlParams.get('requestId');
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            if (!requestId) {
+                alert('No leave request ID provided');
+                window.location.href = '/form.html';
+                return;
+            }
+
+            // Get teacher info from localStorage
+            const storedTeacher = localStorage.getItem('selectedTeacher');
+            if (!storedTeacher) {
+                alert('No teacher selected. Please select a teacher from the admin dashboard first.');
+                window.location.href = '/form.html';
+                return;
+            }
+            
+            currentTeacher = JSON.parse(storedTeacher);
+            
+            await loadLeaveRequestDetails();
+            await loadTeacherAvailability();
+            await loadTeacherLectures();
+        });
+
+        async function loadLeaveRequestDetails() {
+            try {
+                const response = await fetch(`/admin/leave-request/${requestId}`);
+                if (response.ok) {
+                    leaveRequest = await response.json();
+                    displayLeaveInfo();
+                } else {
+                    throw new Error('Failed to load leave request');
+                }
+            } catch (error) {
+                console.error('Error loading leave request:', error);
+                alert('Failed to load leave request details');
+            }
+        }
+
+        async function loadTeacherAvailability() {
+            try {
+                const response = await fetch(`/admin/teacher-availability?date=${leaveRequest.date}`);
+                if (response.ok) {
+                    teacherAvailability = await response.json();
+                    // Filter to exclude the teacher who is taking leave
+                    teacherAvailability = teacherAvailability.filter(teacher => 
+                        teacher.email !== leaveRequest.email
+                    );
+                } else {
+                    throw new Error('Failed to load teacher availability');
+                }
+            } catch (error) {
+                console.error('Error loading teacher availability:', error);
+                alert('Failed to load teacher availability');
+            }
+        }
+
+        async function loadTeacherLectures() {
+            try {
+                const response = await fetch('/admin/teacher-lectures-for-day', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        email: leaveRequest.email, 
+                        date: leaveRequest.date 
+                    })
+                });
+                
+                if (response.ok) {
+                    teacherLectures = await response.json();
+                    displayLectures();
+                } else {
+                    throw new Error('Failed to load teacher lectures');
+                }
+            } catch (error) {
+                console.error('Error loading teacher lectures:', error);
+            }
+        }
+
+        function displayLeaveInfo() {
+            const leaveInfoDiv = document.getElementById('leave-info');
+            leaveInfoDiv.innerHTML = `
+                <h3>Leave Request Details</h3>
+                <p><strong>Teacher:</strong> ${leaveRequest.teacherName} (${leaveRequest.email})</p>
+                <p><strong>Date:</strong> ${new Date(leaveRequest.date).toLocaleDateString()}</p>
+                <p><strong>Day:</strong> ${getDayName(new Date(leaveRequest.date))}</p>
+                <p><strong>Reason:</strong> ${leaveRequest.reason}</p>
+            `;
+        }
+
+        function displayLectures() {
+            const container = document.getElementById('lectures-container');
+            
+            if (teacherLectures.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #666;">No lectures scheduled for this day.</p>';
+                return;
+            }
+
+            container.innerHTML = `
+                <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #28a745;">
+                    <h4>Assigning lectures to: ${currentTeacher.username} (${currentTeacher.email})</h4>
+                    <p>Selected from admin dashboard</p>
+                </div>
+                ${teacherLectures.map((lecture, index) => `
+                    <div class="lecture-item">
+                        <div class="lecture-details">
+                            <h4>${lecture.subject}</h4>
+                            <p><strong>Time:</strong> ${lecture.slot}</p>
+                            <p><strong>Room:</strong> ${lecture.room || 'Not specified'}</p>
+                            <p><strong>Period:</strong> ${lecture.lectureNumber}</p>
+                            <span class="status unassigned" id="status-${index}">Unassigned</span>
+                        </div>
+                        <div class="assign-section">
+                            ${getTeacherAssignmentButton(lecture, index)}
+                        </div>
+                    </div>
+                `).join('')}
+            `;
+        }
+
+        function getTeacherAssignmentButton(lecture, lectureIndex) {
+            const period = lecture.lectureNumber;
+            const assignedTeacher = teacherAvailability.find(t => t.email === currentTeacher.email);
+            
+            if (!assignedTeacher) {
+                return `
+                    <div class="teacher-option" style="background: #f8d7da; border-color: #dc3545;">
+                        <div class="teacher-info">
+                            <div class="teacher-name">⚠️ Teacher Not Available</div>
+                            <div class="teacher-details">Teacher not found in system</div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            const isAvailable = !assignedTeacher.availability[period].occupied;
+            const workloadClass = getWorkloadClass(assignedTeacher.workload);
+            const availabilityText = isAvailable ? 'Available' : `Busy (${assignedTeacher.availability[period].subject})`;
+            const availabilityClass = isAvailable ? 'available' : 'occupied';
+            
+            return `
+                <div class="teacher-option">
+                    <div class="teacher-info">
+                        <div class="teacher-name">${assignedTeacher.username}</div>
+                        <div class="teacher-details">${assignedTeacher.email}</div>
+                    </div>
+                    <div class="availability-info">
+                        <span class="workload-badge ${workloadClass}">
+                            ${assignedTeacher.workload}/8 lectures
+                        </span>
+                        <span class="availability-status ${availabilityClass}">
+                            ${availabilityText}
+                        </span>
+                        <button class="teacher-select-btn" 
+                                onclick="assignLectureToTeacher(${lectureIndex}, '${assignedTeacher.email}', '${assignedTeacher.username}')"
+                                ${!isAvailable ? 'disabled' : ''}>
+                            ${isAvailable ? 'Assign to This Teacher' : 'Unavailable'}
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getWorkloadClass(workload) {
+            if (workload <= 3) return 'workload-low';
+            if (workload <= 6) return 'workload-medium';
+            return 'workload-high';
+        }
+
+        function assignLectureToTeacher(lectureIndex, teacherEmail, teacherName) {
+            const lecture = teacherLectures[lectureIndex];
+            
+            assignments[lectureIndex] = {
+                lecture: lecture,
+                assignedTo: teacherEmail
+            };
+
+            // Update status
+            const status = document.getElementById(`status-${lectureIndex}`);
+            status.textContent = `Assigned to ${teacherName}`;
+            status.className = 'status assigned';
+
+            // Update the assignment button to show it's assigned
+            const assignSection = status.parentElement.nextElementSibling;
+            assignSection.innerHTML = `
+                <div class="teacher-option" style="background: #e8f5e8; border-color: #28a745;">
+                    <div class="teacher-info">
+                        <div class="teacher-name">✅ ${teacherName}</div>
+                        <div class="teacher-details">${teacherEmail}</div>
+                    </div>
+                    <div class="availability-info">
+                        <span class="availability-status available">Assigned</span>
+                        <button class="teacher-select-btn" 
+                                onclick="unassignLecture(${lectureIndex})"
+                                style="background: #dc3545;">
+                            Remove Assignment
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Update teacher availability to reflect this assignment
+            updateTeacherAvailability(teacherEmail, lecture.lectureNumber);
+        }
+
+        function unassignLecture(lectureIndex) {
+            const assignment = assignments[lectureIndex];
+            if (assignment) {
+                // Restore teacher availability
+                restoreTeacherAvailability(assignment.assignedTo, assignment.lecture.lectureNumber);
+                
+                // Remove assignment
+                delete assignments[lectureIndex];
+                
+                // Update status
+                const status = document.getElementById(`status-${lectureIndex}`);
+                status.textContent = 'Unassigned';
+                status.className = 'status unassigned';
+                
+                // Restore assignment section
+                const assignSection = status.parentElement.nextElementSibling;
+                assignSection.innerHTML = getTeacherAssignmentButton(teacherLectures[lectureIndex], lectureIndex);
+            }
+        }
+
+        function updateTeacherAvailability(teacherEmail, period) {
+            const teacher = teacherAvailability.find(t => t.email === teacherEmail);
+            if (teacher) {
+                teacher.availability[period] = { occupied: true, subject: 'Assigned' };
+                teacher.workload++;
+            }
+        }
+
+        function restoreTeacherAvailability(teacherEmail, period) {
+            const teacher = teacherAvailability.find(t => t.email === teacherEmail);
+            if (teacher) {
+                teacher.availability[period] = { occupied: false };
+                teacher.workload--;
+            }
+        }
+
+        async function completeAssignment() {
+            const assignedCount = Object.keys(assignments).length;
+            const totalLectures = teacherLectures.length;
+
+            if (assignedCount < totalLectures) {
+                const confirmResult = confirm(`You have assigned ${assignedCount} out of ${totalLectures} lectures. Continue anyway?`);
+                if (!confirmResult) return;
+            }
+
+            try {
+                const response = await fetch('/admin/complete-leave-assignment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        requestId: requestId,
+                        assignments: assignments,
+                        leaveRequest: leaveRequest
+                    })
+                });
+
+                if (response.ok) {
+                    alert('Leave request approved and lectures assigned successfully!');
+                    window.location.href = '/form.html';
+                } else {
+                    const error = await response.text();
+                    alert(`Failed to complete assignment: ${error}`);
+                }
+            } catch (error) {
+                console.error('Error completing assignment:', error);
+                alert('Error occurred while completing assignment.');
+            }
+        }
+
+        function cancelAssignment() {
+            if (confirm('Are you sure you want to cancel? All assignments will be lost.')) {
+                window.location.href = '/form.html';
+            }
+        }
+
+        function getDayName(date) {
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            return days[date.getDay()];
+        }
+    </script>
+</body>
+</html>

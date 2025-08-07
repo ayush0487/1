@@ -9,7 +9,11 @@ import {
   addScheduleItem,
   saveFullSchedule,
   getLeaveRequests,
-  handleLeaveRequest
+  handleLeaveRequest,
+  getLeaveRequestById,
+  getTeacherLecturesForDay,
+  getTeacherAvailabilityForDay,
+  completeLeaveAssignment
 } from '../controller/admin.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -37,6 +41,18 @@ router.get('/leave-requests', getLeaveRequests);
 
 // ✅ POST: Handle leave request (approve/reject)
 router.post('/handle-leave-request', handleLeaveRequest);
+
+// ✅ GET: Get specific leave request by ID
+router.get('/leave-request/:requestId', getLeaveRequestById);
+
+// ✅ POST: Get teacher's lectures for specific day
+router.post('/teacher-lectures-for-day', getTeacherLecturesForDay);
+
+// ✅ GET: Get teacher availability for specific day
+router.get('/teacher-availability', getTeacherAvailabilityForDay);
+
+// ✅ POST: Complete leave assignment
+router.post('/complete-leave-assignment', completeLeaveAssignment);
 
 // ✅ Admin Home Page
 router.get('/', (req, res) => {

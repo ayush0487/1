@@ -6,81 +6,334 @@
     "role": "admin"
   },
   {
-    "username": "egvefgv",
-    "email": "ayush087negi0487@gmail.com",
-    "password": "123",
-    "role": "admin"
-  },
-  {
     "username": "ayush",
     "email": "ayush",
-    "password": "12345",
+    "password": "11",
     "role": "user",
-    "lectures": [],
     "schedule": [
       {
-        "day": "Monday",
-        "lectureNumber": "3",
-        "subject": "fgvhbjnk",
-        "room": "1235",
-        "slot": "",
-        "timestamp": "2025-07-22T16:20:49.481Z"
-      },
-      {
-        "day": "Tuesday",
-        "lectureNumber": "5",
-        "subject": "sd",
-        "room": "97y8",
-        "slot": "",
-        "timestamp": "2025-07-22T16:24:31.640Z"
-      },
-      {
-        "day": "Saturday",
-        "lectureNumber": "1",
-        "subject": "fgvhbjnkm",
-        "room": "7654",
-        "slot": "",
-        "timestamp": "2025-07-22T16:29:24.072Z"
-      },
-      {
-        "day": "Wednesday",
-        "lectureNumber": "1",
-        "subject": "lpoijuhgfv",
-        "room": "567",
-        "slot": "",
-        "timestamp": "2025-07-22T16:32:01.147Z"
+        "day": "Thursday",
+        "lectureNumber": 1,
+        "subject": "Leave",
+        "room": "",
+        "slot": "9:00 AM – 9:50 AM",
+        "timestamp": "2025-08-01T04:30:29.778Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-07"
       },
       {
         "day": "Thursday",
-        "lectureNumber": "1",
-        "subject": "gthjk765",
-        "room": "56",
-        "slot": "",
-        "timestamp": "2025-07-22T16:33:54.095Z"
+        "lectureNumber": 2,
+        "subject": "Leave",
+        "room": "",
+        "slot": "9:50 AM – 10:40 AM",
+        "timestamp": "2025-08-01T04:30:29.778Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-07"
+      },
+      {
+        "day": "Thursday",
+        "lectureNumber": 3,
+        "subject": "Leave",
+        "room": "",
+        "slot": "10:40 AM – 11:30 AM",
+        "timestamp": "2025-08-01T04:30:29.778Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-07"
+      },
+      {
+        "day": "Thursday",
+        "lectureNumber": 4,
+        "subject": "Leave",
+        "room": "",
+        "slot": "11:30 AM – 12:20 PM",
+        "timestamp": "2025-08-01T04:30:29.778Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-07"
+      },
+      {
+        "day": "Thursday",
+        "lectureNumber": 5,
+        "subject": "Leave",
+        "room": "",
+        "slot": "12:20 PM – 1:10 PM",
+        "timestamp": "2025-08-01T04:30:29.778Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-07"
+      },
+      {
+        "day": "Thursday",
+        "lectureNumber": 6,
+        "subject": "Leave",
+        "room": "",
+        "slot": "1:10 PM – 2:00 PM",
+        "timestamp": "2025-08-01T04:30:29.778Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-07"
+      },
+      {
+        "day": "Thursday",
+        "lectureNumber": 7,
+        "subject": "Leave",
+        "room": "",
+        "slot": "2:00 PM – 2:50 PM",
+        "timestamp": "2025-08-01T04:30:29.778Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-07"
+      },
+      {
+        "day": "Thursday",
+        "lectureNumber": 8,
+        "subject": "Leave",
+        "room": "",
+        "slot": "2:50 PM – 3:40 PM",
+        "timestamp": "2025-08-01T04:30:29.778Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-07"
+      },
+      {
+        "day": "Thursday",
+        "lectureNumber": 1,
+        "subject": "Leave",
+        "room": "",
+        "slot": "9:00 AM – 9:50 AM",
+        "timestamp": "2025-08-01T04:40:42.059Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-07"
+      },
+      {
+        "day": "Thursday",
+        "lectureNumber": 2,
+        "subject": "Leave",
+        "room": "",
+        "slot": "9:50 AM – 10:40 AM",
+        "timestamp": "2025-08-01T04:40:42.059Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-07"
+      },
+      {
+        "day": "Thursday",
+        "lectureNumber": 3,
+        "subject": "Leave",
+        "room": "",
+        "slot": "10:40 AM – 11:30 AM",
+        "timestamp": "2025-08-01T04:40:42.059Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-07"
+      },
+      {
+        "day": "Thursday",
+        "lectureNumber": 4,
+        "subject": "Leave",
+        "room": "",
+        "slot": "11:30 AM – 12:20 PM",
+        "timestamp": "2025-08-01T04:40:42.059Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-07"
+      },
+      {
+        "day": "Thursday",
+        "lectureNumber": 5,
+        "subject": "Leave",
+        "room": "",
+        "slot": "12:20 PM – 1:10 PM",
+        "timestamp": "2025-08-01T04:40:42.059Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-07"
+      },
+      {
+        "day": "Thursday",
+        "lectureNumber": 6,
+        "subject": "Leave",
+        "room": "",
+        "slot": "1:10 PM – 2:00 PM",
+        "timestamp": "2025-08-01T04:40:42.059Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-07"
+      },
+      {
+        "day": "Thursday",
+        "lectureNumber": 7,
+        "subject": "Leave",
+        "room": "",
+        "slot": "2:00 PM – 2:50 PM",
+        "timestamp": "2025-08-01T04:40:42.059Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-07"
+      },
+      {
+        "day": "Thursday",
+        "lectureNumber": 8,
+        "subject": "Leave",
+        "room": "",
+        "slot": "2:50 PM – 3:40 PM",
+        "timestamp": "2025-08-01T04:40:42.059Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-07"
+      },
+      {
+        "day": "Tuesday",
+        "lectureNumber": 1,
+        "subject": "fghjn",
+        "room": "3edxw",
+        "slot": "9:00 AM – 9:50 AM",
+        "timestamp": "2025-08-04T05:08:14.443Z"
+      },
+      {
+        "day": "Tuesday",
+        "lectureNumber": 2,
+        "subject": "rtfyuhij",
+        "room": "asxa",
+        "slot": "9:50 AM – 10:40 AM",
+        "timestamp": "2025-08-04T04:47:11.134Z"
+      },
+      {
+        "day": "Tuesday",
+        "lectureNumber": 3,
+        "subject": "Leave",
+        "room": "",
+        "slot": "10:40 AM – 11:30 AM",
+        "timestamp": "2025-08-01T04:41:41.704Z",
+        "isLeave": true,
+        "leaveDate": "2025-07-29"
+      },
+      {
+        "day": "Tuesday",
+        "lectureNumber": 4,
+        "subject": "Leave",
+        "room": "",
+        "slot": "11:30 AM – 12:20 PM",
+        "timestamp": "2025-08-01T04:41:41.704Z",
+        "isLeave": true,
+        "leaveDate": "2025-07-29"
+      },
+      {
+        "day": "Tuesday",
+        "lectureNumber": 5,
+        "subject": "Leave",
+        "room": "",
+        "slot": "12:20 PM – 1:10 PM",
+        "timestamp": "2025-08-01T04:41:41.704Z",
+        "isLeave": true,
+        "leaveDate": "2025-07-29"
+      },
+      {
+        "day": "Tuesday",
+        "lectureNumber": 6,
+        "subject": "Leave",
+        "room": "",
+        "slot": "1:10 PM – 2:00 PM",
+        "timestamp": "2025-08-01T04:41:41.704Z",
+        "isLeave": true,
+        "leaveDate": "2025-07-29"
+      },
+      {
+        "day": "Tuesday",
+        "lectureNumber": 7,
+        "subject": "Leave",
+        "room": "",
+        "slot": "2:00 PM – 2:50 PM",
+        "timestamp": "2025-08-01T04:41:41.704Z",
+        "isLeave": true,
+        "leaveDate": "2025-07-29"
+      },
+      {
+        "day": "Tuesday",
+        "lectureNumber": 8,
+        "subject": "Leave",
+        "room": "",
+        "slot": "2:50 PM – 3:40 PM",
+        "timestamp": "2025-08-01T04:41:41.704Z",
+        "isLeave": true,
+        "leaveDate": "2025-07-29"
+      },
+      {
+        "day": "Monday",
+        "lectureNumber": 1,
+        "subject": "rtfyuhij",
+        "room": "wac",
+        "slot": "9:00 AM – 9:50 AM",
+        "timestamp": "2025-08-04T04:42:22.079Z"
       },
       {
         "day": "Friday",
-        "lectureNumber": "1",
-        "subject": "fghjn",
-        "room": "567",
-        "slot": "",
-        "timestamp": "2025-07-23T07:03:51.144Z"
-      },
-      {
-        "day": "Monday",
         "lectureNumber": 1,
-        "subject": "ee",
-        "room": "wew",
+        "subject": "Leave",
+        "room": "",
         "slot": "9:00 AM – 9:50 AM",
-        "timestamp": "2025-07-31T04:46:41.089Z"
+        "timestamp": "2025-08-04T07:18:28.409Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-01"
       },
       {
-        "day": "Monday",
+        "day": "Friday",
         "lectureNumber": 2,
-        "subject": "fgvhbjnkm",
-        "room": "vcds",
+        "subject": "Leave",
+        "room": "",
         "slot": "9:50 AM – 10:40 AM",
-        "timestamp": "2025-07-31T04:49:52.490Z"
+        "timestamp": "2025-08-04T07:18:28.409Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-01"
+      },
+      {
+        "day": "Friday",
+        "lectureNumber": 3,
+        "subject": "Leave",
+        "room": "",
+        "slot": "10:40 AM – 11:30 AM",
+        "timestamp": "2025-08-04T07:18:28.409Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-01"
+      },
+      {
+        "day": "Friday",
+        "lectureNumber": 4,
+        "subject": "Leave",
+        "room": "",
+        "slot": "11:30 AM – 12:20 PM",
+        "timestamp": "2025-08-04T07:18:28.409Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-01"
+      },
+      {
+        "day": "Friday",
+        "lectureNumber": 5,
+        "subject": "Leave",
+        "room": "",
+        "slot": "12:20 PM – 1:10 PM",
+        "timestamp": "2025-08-04T07:18:28.409Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-01"
+      },
+      {
+        "day": "Friday",
+        "lectureNumber": 6,
+        "subject": "Leave",
+        "room": "",
+        "slot": "1:10 PM – 2:00 PM",
+        "timestamp": "2025-08-04T07:18:28.409Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-01"
+      },
+      {
+        "day": "Friday",
+        "lectureNumber": 7,
+        "subject": "Leave",
+        "room": "",
+        "slot": "2:00 PM – 2:50 PM",
+        "timestamp": "2025-08-04T07:18:28.409Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-01"
+      },
+      {
+        "day": "Friday",
+        "lectureNumber": 8,
+        "subject": "Leave",
+        "room": "",
+        "slot": "2:50 PM – 3:40 PM",
+        "timestamp": "2025-08-04T07:18:28.409Z",
+        "isLeave": true,
+        "leaveDate": "2025-08-01"
       },
       {
         "day": "Wednesday",
@@ -88,9 +341,9 @@
         "subject": "Leave",
         "room": "",
         "slot": "9:00 AM – 9:50 AM",
-        "timestamp": "2025-07-31T06:07:25.855Z",
+        "timestamp": "2025-08-04T10:14:25.629Z",
         "isLeave": true,
-        "leaveDate": "2025-07-16"
+        "leaveDate": "2025-08-06"
       },
       {
         "day": "Wednesday",
@@ -98,9 +351,9 @@
         "subject": "Leave",
         "room": "",
         "slot": "9:50 AM – 10:40 AM",
-        "timestamp": "2025-07-31T06:07:25.855Z",
+        "timestamp": "2025-08-04T10:14:25.629Z",
         "isLeave": true,
-        "leaveDate": "2025-07-16"
+        "leaveDate": "2025-08-06"
       },
       {
         "day": "Wednesday",
@@ -108,9 +361,9 @@
         "subject": "Leave",
         "room": "",
         "slot": "10:40 AM – 11:30 AM",
-        "timestamp": "2025-07-31T06:07:25.855Z",
+        "timestamp": "2025-08-04T10:14:25.629Z",
         "isLeave": true,
-        "leaveDate": "2025-07-16"
+        "leaveDate": "2025-08-06"
       },
       {
         "day": "Wednesday",
@@ -118,9 +371,9 @@
         "subject": "Leave",
         "room": "",
         "slot": "11:30 AM – 12:20 PM",
-        "timestamp": "2025-07-31T06:07:25.855Z",
+        "timestamp": "2025-08-04T10:14:25.629Z",
         "isLeave": true,
-        "leaveDate": "2025-07-16"
+        "leaveDate": "2025-08-06"
       },
       {
         "day": "Wednesday",
@@ -128,9 +381,9 @@
         "subject": "Leave",
         "room": "",
         "slot": "12:20 PM – 1:10 PM",
-        "timestamp": "2025-07-31T06:07:25.855Z",
+        "timestamp": "2025-08-04T10:14:25.629Z",
         "isLeave": true,
-        "leaveDate": "2025-07-16"
+        "leaveDate": "2025-08-06"
       },
       {
         "day": "Wednesday",
@@ -138,9 +391,9 @@
         "subject": "Leave",
         "room": "",
         "slot": "1:10 PM – 2:00 PM",
-        "timestamp": "2025-07-31T06:07:25.855Z",
+        "timestamp": "2025-08-04T10:14:25.629Z",
         "isLeave": true,
-        "leaveDate": "2025-07-16"
+        "leaveDate": "2025-08-06"
       },
       {
         "day": "Wednesday",
@@ -148,9 +401,9 @@
         "subject": "Leave",
         "room": "",
         "slot": "2:00 PM – 2:50 PM",
-        "timestamp": "2025-07-31T06:07:25.855Z",
+        "timestamp": "2025-08-04T10:14:25.629Z",
         "isLeave": true,
-        "leaveDate": "2025-07-16"
+        "leaveDate": "2025-08-06"
       },
       {
         "day": "Wednesday",
@@ -158,118 +411,32 @@
         "subject": "Leave",
         "room": "",
         "slot": "2:50 PM – 3:40 PM",
-        "timestamp": "2025-07-31T06:07:25.855Z",
+        "timestamp": "2025-08-04T10:14:25.629Z",
         "isLeave": true,
-        "leaveDate": "2025-07-16"
-      },
-      {
-        "day": "Tuesday",
-        "lectureNumber": 1,
-        "subject": "Leave",
-        "room": "",
-        "slot": "9:00 AM – 9:50 AM",
-        "timestamp": "2025-07-31T06:34:33.496Z",
-        "isLeave": true,
-        "leaveDate": "2025-07-22"
-      },
-      {
-        "day": "Tuesday",
-        "lectureNumber": 2,
-        "subject": "Leave",
-        "room": "",
-        "slot": "9:50 AM – 10:40 AM",
-        "timestamp": "2025-07-31T06:34:33.496Z",
-        "isLeave": true,
-        "leaveDate": "2025-07-22"
-      },
-      {
-        "day": "Tuesday",
-        "lectureNumber": 3,
-        "subject": "Leave",
-        "room": "",
-        "slot": "10:40 AM – 11:30 AM",
-        "timestamp": "2025-07-31T06:34:33.496Z",
-        "isLeave": true,
-        "leaveDate": "2025-07-22"
-      },
-      {
-        "day": "Tuesday",
-        "lectureNumber": 4,
-        "subject": "Leave",
-        "room": "",
-        "slot": "11:30 AM – 12:20 PM",
-        "timestamp": "2025-07-31T06:34:33.496Z",
-        "isLeave": true,
-        "leaveDate": "2025-07-22"
-      },
-      {
-        "day": "Tuesday",
-        "lectureNumber": 5,
-        "subject": "Leave",
-        "room": "",
-        "slot": "12:20 PM – 1:10 PM",
-        "timestamp": "2025-07-31T06:34:33.496Z",
-        "isLeave": true,
-        "leaveDate": "2025-07-22"
-      },
-      {
-        "day": "Tuesday",
-        "lectureNumber": 6,
-        "subject": "Leave",
-        "room": "",
-        "slot": "1:10 PM – 2:00 PM",
-        "timestamp": "2025-07-31T06:34:33.496Z",
-        "isLeave": true,
-        "leaveDate": "2025-07-22"
-      },
-      {
-        "day": "Tuesday",
-        "lectureNumber": 7,
-        "subject": "Leave",
-        "room": "",
-        "slot": "2:00 PM – 2:50 PM",
-        "timestamp": "2025-07-31T06:34:33.496Z",
-        "isLeave": true,
-        "leaveDate": "2025-07-22"
-      },
-      {
-        "day": "Tuesday",
-        "lectureNumber": 8,
-        "subject": "Leave",
-        "room": "",
-        "slot": "2:50 PM – 3:40 PM",
-        "timestamp": "2025-07-31T06:34:33.496Z",
-        "isLeave": true,
-        "leaveDate": "2025-07-22"
+        "leaveDate": "2025-08-06"
       }
     ]
   },
   {
-    "username": "ayush",
+    "username": "ayush1",
     "email": "ayush1",
-    "password": "12345",
+    "password": "11",
     "role": "user",
     "schedule": [
       {
-        "day": "Wednesday",
+        "day": "Tuesday",
         "lectureNumber": 2,
-        "subject": "fvhjer",
-        "room": "1234",
+        "subject": "rtfyuhij",
+        "room": "qwdwx",
         "slot": "9:50 AM – 10:40 AM",
-        "timestamp": "2025-07-31T05:56:19.527Z"
+        "timestamp": "2025-08-04T04:41:22.160Z"
       }
     ]
   },
   {
-    "username": "Akash",
-    "email": "ag@gmail.com",
-    "password": "12345",
-    "role": "admin"
-  },
-  {
-    "username": "akash",
-    "email": "ag",
-    "password": "1234567",
-    "role": "admin"
+    "username": "XYZ",
+    "email": "XYZ@G.COM",
+    "password": "123",
+    "role": "h"
   }
 ]

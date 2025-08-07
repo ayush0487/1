@@ -211,54 +211,204 @@ export const handleLeaveRequest = async (req, res) => {
       return res.status(404).json({ message: 'Leave request not found' });
     }
     
-    const leaveRequest = leaveRequests[requestIndex];
-    leaveRequest.status = status;
+    leaveRequests[requestIndex].status = status;
     
-    // If approved, add leave entries to teacher's schedule
-    if (status === 'Approved') {
-      const users = await readDataFile();
-      const teacherIndex = users.findIndex(u => u.email === leaveRequest.email && u.role === 'user');
-      
-      if (teacherIndex !== -1) {
-        if (!users[teacherIndex].schedule) {
-          users[teacherIndex].schedule = [];
-        }
-        
-        // Get the day of the week for the leave date
-        const leaveDate = new Date(leaveRequest.date);
-        const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-        const dayOfWeek = dayNames[leaveDate.getDay()];
-        
-        // Add leave entries for all 8 periods on that day
-        for (let period = 1; period <= 8; period++) {
-          // Remove existing schedule for that day and period
-          users[teacherIndex].schedule = users[teacherIndex].schedule.filter(
-            item => !(item.day === dayOfWeek && item.lectureNumber === period)
-          );
-          
-          // Add leave entry
-          users[teacherIndex].schedule.push({
-            day: dayOfWeek,
-            lectureNumber: period,
-            subject: 'Leave',
-            room: '',
-            slot: lectureTimeSlots[period] || '',
-            timestamp: new Date().toISOString(),
-            isLeave: true,
-            leaveDate: leaveRequest.date
-          });
-        }
-        
-        await writeDataFile(users);
-      }
+    // Only for direct rejection, not for approval through assignment
+    if (status === 'Rejected') {
+      await fs.writeFile(leaveRequestsPath, JSON.stringify(leaveRequests, null, 2));
     }
-    
-    // Update leave request status
-    await fs.writeFile(leaveRequestsPath, JSON.stringify(leaveRequests, null, 2));
     
     res.json({ message: `Leave request ${status.toLowerCase()} successfully` });
   } catch (err) {
     console.error('Error handling leave request:', err);
     res.status(500).json({ message: 'Failed to handle leave request' });
+  }
+};
+
+export const getLeaveRequestById = async (req, res) => {
+  const { requestId } = req.params;
+  
+  try {
+    const leaveRequestsPath = path.join(__dirname, '../model/leave_requests.json');
+    const fileContent = await fs.readFile(leaveRequestsPath, 'utf-8');
+    const leaveRequests = JSON.parse(fileContent);
+    
+    const leaveRequest = leaveRequests.find(req => req.id == requestId);
+    if (!leaveRequest) {
+      return res.status(404).json({ message: 'Leave request not found' });
+    }
+    
+    res.json(leaveRequest);
+  } catch (err) {
+    console.error('Error fetching leave request:', err);
+    res.status(500).json({ message: 'Failed to fetch leave request' });
+  }
+};
+
+export const getTeacherLecturesForDay = async (req, res) => {
+  const { email, date } = req.body;
+  
+  try {
+    const users = await readDataFile();
+    const teacher = users.find(u => u.email === email && u.role === 'user');
+    
+    if (!teacher) {
+      return res.status(404).json({ message: 'Teacher not found' });
+    }
+    
+    // Get day name from date
+    const leaveDate = new Date(date);
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const dayOfWeek = dayNames[leaveDate.getDay()];
+    
+    // Filter lectures for that specific day and exclude existing leave entries
+    const dayLectures = (teacher.schedule || []).filter(lecture => 
+      lecture.day === dayOfWeek && !lecture.isLeave
+    );
+    
+    res.json(dayLectures);
+  } catch (err) {
+    console.error('Error fetching teacher lectures:', err);
+    res.status(500).json({ message: 'Failed to fetch teacher lectures' });
+  }
+};
+
+// New function to get teacher availability and workload for a specific day
+export const getTeacherAvailabilityForDay = async (req, res) => {
+  const { date } = req.query;
+  
+  try {
+    const users = await readDataFile();
+    const teachers = users.filter(u => u.role === 'user');
+    
+    // Get day name from date
+    const targetDate = new Date(date);
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const dayOfWeek = dayNames[targetDate.getDay()];
+    
+    const teacherAvailability = teachers.map(teacher => {
+      const daySchedule = (teacher.schedule || []).filter(lecture => 
+        lecture.day === dayOfWeek && !lecture.isLeave
+      );
+      
+      // Create availability array for all 8 periods
+      const availability = {};
+      const workload = daySchedule.length;
+      
+      // Mark occupied periods
+      daySchedule.forEach(lecture => {
+        availability[lecture.lectureNumber] = {
+          occupied: true,
+          subject: lecture.subject,
+          room: lecture.room
+        };
+      });
+      
+      // Mark free periods
+      for (let period = 1; period <= 8; period++) {
+        if (!availability[period]) {
+          availability[period] = { occupied: false };
+        }
+      }
+      
+      return {
+        email: teacher.email,
+        username: teacher.username,
+        workload: workload,
+        maxWorkload: 8,
+        availability: availability,
+        daySchedule: daySchedule
+      };
+    });
+    
+    res.json(teacherAvailability);
+  } catch (err) {
+    console.error('Error fetching teacher availability:', err);
+    res.status(500).json({ message: 'Failed to fetch teacher availability' });
+  }
+};
+
+export const completeLeaveAssignment = async (req, res) => {
+  const { requestId, assignments, leaveRequest } = req.body;
+  
+  try {
+    const users = await readDataFile();
+    
+    // 1. Update leave request status
+    const leaveRequestsPath = path.join(__dirname, '../model/leave_requests.json');
+    const leaveFileContent = await fs.readFile(leaveRequestsPath, 'utf-8');
+    let leaveRequests = JSON.parse(leaveFileContent);
+    
+    const requestIndex = leaveRequests.findIndex(req => req.id == requestId);
+    if (requestIndex !== -1) {
+      leaveRequests[requestIndex].status = 'Approved';
+    }
+    
+    // 2. Find the teacher who requested leave
+    const teacherIndex = users.findIndex(u => u.email === leaveRequest.email && u.role === 'user');
+    if (teacherIndex === -1) {
+      return res.status(404).json({ message: 'Teacher not found' });
+    }
+    
+    // 3. Get the day of the week for the leave date
+    const leaveDate = new Date(leaveRequest.date);
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const dayOfWeek = dayNames[leaveDate.getDay()];
+    
+    // 4. Process assignments
+    for (const [lectureIndex, assignment] of Object.entries(assignments)) {
+      const { lecture, assignedTo } = assignment;
+      
+      // Find the teacher to assign the lecture to
+      const assignedTeacherIndex = users.findIndex(u => u.email === assignedTo && u.role === 'user');
+      if (assignedTeacherIndex !== -1) {
+        // Initialize schedule if doesn't exist
+        if (!users[assignedTeacherIndex].schedule) {
+          users[assignedTeacherIndex].schedule = [];
+        }
+        
+        // Add the lecture to assigned teacher's schedule
+        users[assignedTeacherIndex].schedule.push({
+          ...lecture,
+          timestamp: new Date().toISOString(),
+          isAssigned: true,
+          originalTeacher: leaveRequest.email,
+          leaveDate: leaveRequest.date
+        });
+      }
+    }
+    
+    // 5. Replace original teacher's lectures with "Leave" for the entire day
+    if (!users[teacherIndex].schedule) {
+      users[teacherIndex].schedule = [];
+    }
+    
+    // Remove existing lectures for that day
+    users[teacherIndex].schedule = users[teacherIndex].schedule.filter(
+      item => !(item.day === dayOfWeek && !item.isLeave)
+    );
+    
+    // Add leave entries for all 8 periods
+    for (let period = 1; period <= 8; period++) {
+      users[teacherIndex].schedule.push({
+        day: dayOfWeek,
+        lectureNumber: period,
+        subject: 'Leave',
+        room: '',
+        slot: lectureTimeSlots[period] || '',
+        timestamp: new Date().toISOString(),
+        isLeave: true,
+        leaveDate: leaveRequest.date
+      });
+    }
+    
+    // 6. Save all changes
+    await writeDataFile(users);
+    await fs.writeFile(leaveRequestsPath, JSON.stringify(leaveRequests, null, 2));
+    
+    res.json({ message: 'Leave assignment completed successfully' });
+  } catch (err) {
+    console.error('Error completing leave assignment:', err);
+    res.status(500).json({ message: 'Failed to complete leave assignment' });
   }
 };

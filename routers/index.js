@@ -42,4 +42,9 @@ mainRouter.get('/addLecture.html', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../public/addLecture.html'));
 });
 
-export default mainRouter;
+// Add route to serve assignLecture.html directly
+mainRouter.get('/assignLecture.html', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../public/assignLecture.html'));
+});
+
+export { mainRouter as default };

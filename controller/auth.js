@@ -10,7 +10,12 @@ const filepath=path.join(__dirname,'../model/data.json');
 
 export const index=async (req, res) => {
    
-       const data = req.body;
+    const data = req.body;
+    
+    // Required fields check kar rahe hain proper validation ke saath
+    if (!data.email || !data.password || !data.username || !data.role) {
+        return res.status(400).send("Email, password, username, and role are required");
+    }
     
     try{
         let fileData=[];
@@ -25,8 +30,10 @@ export const index=async (req, res) => {
             }
         } catch (err) {
             
-            console.error('Error reading or parsing file:', err);
+            
+            console.error('File read karne ya parse karne mein error:', err);
         }
+
         fileData.push(data);
         console.log(fileData)
          fs.writeFile(filepath,JSON.stringify(fileData,null,2),(err)=>{
@@ -34,7 +41,7 @@ export const index=async (req, res) => {
          });
         return res.status(201).send("User registered successfully");
     } catch (err) {
-        console.error('Error in registration:', err);
+        console.error('Registration mein error:', err);
         return res.status(500).send("Internal server error");
     
 
@@ -43,6 +50,7 @@ export const index=async (req, res) => {
 export const login = async (req, res) => {
     const { email, password, role } = req.body;
 
+    // Required fields check kar rahe hain proper validation ke saath
     if (!email || !password || !role) {
         return res.status(400).send("Email, password and role are required");
     }
@@ -57,7 +65,7 @@ export const login = async (req, res) => {
             return res.status(401).send("Invalid email, password or role");
         }
         
-        // Store user data in session
+        // User ka data session mein store kar rahe hain
         req.session.user = {
             email: user.email,
             role: user.role,
@@ -66,7 +74,7 @@ export const login = async (req, res) => {
 
         return res.status(200).send("Login successful");
     } catch (err) {
-        console.error('Error in login:', err);
+        console.error('Login mein error:', err);
         return res.status(500).send("Internal server error");
     }
 };

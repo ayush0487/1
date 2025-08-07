@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const userName = document.querySelector('#User-name');
   const userRole = document.querySelector('#User-role');
   const selectTeacher = document.querySelector('#select-tag');
-  const addBtn = document.querySelector('#add-btn');
   const dashboard = document.querySelector('#dashboard');
   const calendar = document.querySelector('#calendar');
   const approveLeave = document.querySelector('#approve-leave');
@@ -60,7 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectedEmail = e.target.value;
     if (selectedEmail) {
       selectedTeacherData = users.find(u => u.email === selectedEmail);
-      localStorage.setItem('selectedTeacher', JSON.stringify(selectedTeacherData.email));
+      // Store both email and username in localStorage
+      localStorage.setItem('selectedTeacher', JSON.stringify({
+        email: selectedTeacherData.email,
+        username: selectedTeacherData.username
+      }));
       await fetchTeacherSchedule(selectedEmail);
     } else {
       selectedTeacherData = null;
@@ -97,7 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (response.ok) {
         const data = await response.json();
         selectedTeacher = data;
-        renderTimetable();
+        renderTimetable(); // Automatically load teacher schedule
       } else {
         console.error('Failed to fetch teacher schedule:', response.status);
         selectedTeacher = null;
@@ -120,83 +123,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('clock').textContent =
       `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${ampm}`;
   }
-
-  // Add button click handler
-  addBtn.addEventListener('click', async (event) => {
-    event.preventDefault();
-
-    const selectedEmail = selectTeacher.value;
-    if (!selectedEmail) {
-      alert("Please select a teacher first!");
-      return;
-    }
-
-    const confirmed = confirm("Do you want to save the current timetable for this teacher?");
-    if (!confirmed) return;
-
-    const scheduleArray = [];
-    const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
-
-    days.forEach(day => {
-      for (let period = 1; period <= 8; period++) {
-        const cell = document.getElementById(day + period);
-        if (cell && cell.innerHTML.trim()) {
-          try {
-            const content = cell.innerHTML;
-            const lines = content.split('<br>');
-            const subject = lines[0] || '';
-            let room = '';
-
-            if (lines.length > 1) {
-              lines.forEach(line => {
-                if (line.includes('Room:')) {
-                  room = line.replace('<small>Room:', '').replace('</small>', '').trim();
-                }
-              });
-            }
-
-            if (subject) {
-              // Use fixed time slot based on period number
-              const slot = lectureTimeSlots[period];
-              
-              scheduleArray.push({
-                day: day.charAt(0).toUpperCase() + day.slice(1),
-                lectureNumber: period,
-                subject,
-                room,
-                slot
-              });
-            }
-          } catch (parseError) {
-            console.error('Error parsing cell content:', parseError);
-          }
-        }
-      }
-    });
-
-    try {
-      const response = await fetch('/admin/save-schedule', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: selectedEmail,
-          schedule: scheduleArray
-        })
-      });
-
-      if (response.ok) {
-        alert("Schedule saved successfully!");
-        window.location.href = '/form.html';
-      } else {
-        const errorData = await response.json();
-        alert(`Failed to save schedule: ${errorData.message}`);
-      }
-    } catch (err) {
-      console.error("Fetch error:", err);
-      alert("Error occurred while saving schedule.");
-    }
-  });
-
   // Render the teacher's timetable
   function renderTimetable() {
     const days = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday"];
@@ -302,8 +228,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         ${request.status === 'Pending' ? `
           <div class="leave-actions">
-            <button class="approve-btn" onclick="handleLeaveRequest(${request.id}, 'Approved')">
-              Approve
+            <button class="approve-btn" onclick="redirectToAssignment(${request.id})">
+              Assign Lectures & Approve
             </button>
             <button class="reject-btn" onclick="handleLeaveRequest(${request.id}, 'Rejected')">
               Reject
@@ -334,6 +260,11 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error('Error handling leave request:', error);
       alert('Error occurred while processing leave request.');
     }
+  };
+
+  // Redirect to assignment page
+  window.redirectToAssignment = function(requestId) {
+    window.location.href = `/assignLecture.html?requestId=${requestId}`;
   };
 
   // Start initialization
